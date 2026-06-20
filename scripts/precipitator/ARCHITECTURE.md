@@ -83,7 +83,7 @@ HYBRID        = 3+ signature types mixed
 - Generate mock session → run skill → verify expected behavior
 - Extract related sessions → test if skill correctly handles related queries
 
-### 4. Presenter (`presenter.py`)
+### 4. Validation & Install (`validator.py`)
 
 **Input**: Validated skill candidates
 **Output**: User-facing report
@@ -101,7 +101,7 @@ HYBRID        = 3+ signature types mixed
 │   │   ├── miner.py            # Case extraction + clustering
 │   │   ├── forge.py            # LLM skill generation
 │   │   ├── validator.py        # Validation pipeline
-│   │   └── presenter.py        # User presentation
+│   │   └── hook.py             # Incremental cron hook
 │   └── skill_precipitator.py   # CLI entry (orchestrator)
 │
 ├── agent/

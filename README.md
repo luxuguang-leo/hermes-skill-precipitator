@@ -89,11 +89,10 @@ python3 skill_precipitator.py status              # System status
     ├── __init__.py                    # v0.1.0
     ├── ARCHITECTURE.md                # Full design doc
     ├── signatures.py                  # Tool call signature system
-    ├── miner.py                       # Case extraction + clustering (~570 lines)
-    ├── forge.py                       # Skill draft generation
-    ├── validator.py                   # Test + install
-    ├── presenter.py                   # Report generation
-    └── hook.py                        # Incremental session processor
+    ├── miner.py                       # Case extraction + clustering (~280 lines)
+    ├── forge.py                       # Skill draft generation (~166 lines)
+    ├── hook.py                        # Incremental cron hook (~127 lines)
+    └── validator.py                   # Candidate validation (~47 lines)
 
 ~/.hermes/agent/
 ├── cases/                             # Case database
