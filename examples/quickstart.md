@@ -1,4 +1,4 @@
-# Hermes Skill Precipitator — Quick Example
+# Hermes Skill Evolution — Quick Example
 
 ## Prerequisites
 
@@ -9,33 +9,33 @@
 
 ```bash
 # 1. Scan recent sessions
-python3 skill_precipitator.py scan --limit 100
+python3 skill_evolution.py scan --limit 100
 
 # 2. See what was found
-python3 skill_precipitator.py status
+python3 skill_evolution.py status
 
 # 3. Cluster and forge
-python3 skill_precipitator.py cluster
-python3 skill_precipitator.py forge --min-cases 3
+python3 skill_evolution.py cluster
+python3 skill_evolution.py forge --min-cases 3
 
 # 4. View candidates
-python3 skill_precipitator.py report
+python3 skill_evolution.py report
 
 # 5. Run unit tests
-python3 skill_precipitator.py test
+python3 skill_evolution.py test
 ```
 
 ## Incremental Hook
 
 ```bash
 # Single run
-python3 skill_precipitator_hook.py
+python3 skill_evolution_hook.py
 
 # Or register as cron
 hermes cron create \
-  --name skill-precipitator \
+  --name skill-evolution \
   --schedule "every 2h" \
-  --script skill_precipitator_hook.py \
+  --script skill_evolution_hook.py \
   --no-agent
 ```
 

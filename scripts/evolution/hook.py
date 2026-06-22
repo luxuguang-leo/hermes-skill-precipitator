@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Skill Precipitator Hook — Incremental session processor (cron-based)."""
+"""Skill Evolution Hook — Incremental session processor (cron-based)."""
 import json, os, sys, time
 from collections import Counter
 from datetime import datetime
@@ -39,7 +39,7 @@ def get_recent_sessions(db, since_id="", limit=500):
 
 
 def check_threshold(index: dict) -> list:
-    from precipitator.miner import load_cases, cluster_cases as do_cluster
+    from evolution.miner import load_cases, cluster_cases as do_cluster
     cases = load_cases()
     if not cases:
         return []
@@ -59,11 +59,11 @@ def check_threshold(index: dict) -> list:
 
 def incremental_scan(scan_all=False, notify=False) -> str:
     from hermes_state import SessionDB
-    from precipitator.miner import collect_tool_calls, analyze_session, save_case, load_cases
+    from evolution.miner import collect_tool_calls, analyze_session, save_case, load_cases
 
     index = load_index()
     db = SessionDB()
-    lines = [f"Skill Precipitator Hook — {datetime.now().strftime('%Y-%m-%d %H:%M')}"]
+    lines = [f"Skill Evolution Hook — {datetime.now().strftime('%Y-%m-%d %H:%M')}"]
 
     if scan_all:
         sessions = db.list_sessions_rich(limit=10000)

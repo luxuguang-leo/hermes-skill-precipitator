@@ -1,4 +1,4 @@
-# Skill Precipitator — Architecture Design
+# Skill Evolution — Architecture Design
 
 ## Core Concept
 
@@ -96,13 +96,13 @@ HYBRID        = 3+ signature types mixed
 ```
 ~/.hermes/
 ├── scripts/
-│   ├── precipitator/           # Core modules
+│   ├── evolution/           # Core modules
 │   │   ├── ARCHITECTURE.md     # This document
 │   │   ├── miner.py            # Case extraction + clustering
 │   │   ├── forge.py            # LLM skill generation
 │   │   ├── validator.py        # Validation pipeline
 │   │   └── hook.py             # Incremental cron hook
-│   └── skill_precipitator.py   # CLI entry (orchestrator)
+│   └── skill_evolution.py   # CLI entry (orchestrator)
 │
 ├── agent/
 │   ├── cases/                  # Case database

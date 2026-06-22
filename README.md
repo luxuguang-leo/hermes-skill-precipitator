@@ -1,4 +1,4 @@
-# Hermes Skill Precipitator
+# Hermes Skill Evolution
 
 > Automatically discover reusable workflow patterns from Hermes Agent session history and precipitate them into Skills.
 
@@ -15,7 +15,7 @@ Three components work together:
 | Component | What it does | When |
 |-----------|-------------|------|
 | **Hook** (`hook.py`) | Incrementally scans new sessions, extracts cases, checks threshold | Cron every 2h |
-| **CLI** (`skill_precipitator.py`) | Scan, cluster, forge, report, install | Manual |
+| **CLI** (`skill_evolution.py`) | Scan, cluster, forge, report, install | Manual |
 | **Case DB** (`agent/cases/`) | Accumulated case files with tool signatures, user intent, n-gram patterns | Persistent |
 
 ### Pipeline
@@ -53,39 +53,39 @@ cp -r scripts ~/.hermes/
 
 # 2. Register the cron hook
 hermes cron create \
-  --name skill-precipitator \
+  --name skill-evolution \
   --schedule "every 2h" \
-  --script skill_precipitator_hook.py \
+  --script skill_evolution_hook.py \
   --no-agent
 
 # 3. Or run manually
 cd ~/.hermes/scripts
-python3 skill_precipitator.py scan --limit 500
-python3 skill_precipitator.py forge --min-cases 3
-python3 skill_precipitator.py report
+python3 skill_evolution.py scan --limit 500
+python3 skill_evolution.py forge --min-cases 3
+python3 skill_evolution.py report
 ```
 
 ## CLI Reference
 
 ```bash
-python3 skill_precipitator.py scan --limit 100    # Scan recent sessions
-python3 skill_precipitator.py scan --all          # Scan ALL sessions
-python3 skill_precipitator.py cluster             # Cluster existing cases
-python3 skill_precipitator.py forge --min-cases 3 # Generate skill drafts
-python3 skill_precipitator.py report              # Show candidates
-python3 skill_precipitator.py validate            # Validate test scenarios
-python3 skill_precipitator.py install <name>      # Install as Hermes skill
-python3 skill_precipitator.py test                # Run 15 unit tests
-python3 skill_precipitator.py status              # System status
+python3 skill_evolution.py scan --limit 100    # Scan recent sessions
+python3 skill_evolution.py scan --all          # Scan ALL sessions
+python3 skill_evolution.py cluster             # Cluster existing cases
+python3 skill_evolution.py forge --min-cases 3 # Generate skill drafts
+python3 skill_evolution.py report              # Show candidates
+python3 skill_evolution.py validate            # Validate test scenarios
+python3 skill_evolution.py install <name>      # Install as Hermes skill
+python3 skill_evolution.py test                # Run 15 unit tests
+python3 skill_evolution.py status              # System status
 ```
 
 ## Architecture
 
 ```
 ~/.hermes/scripts/
-├── skill_precipitator.py              # CLI orchestrator
-├── skill_precipitator_hook.py         # Cron entry wrapper
-└── precipitator/
+├── skill_evolution.py              # CLI orchestrator
+├── skill_evolution_hook.py         # Cron entry wrapper
+└── evolution/
     ├── __init__.py                    # v0.1.0
     ├── ARCHITECTURE.md                # Full design doc
     ├── signatures.py                  # Tool call signature system
@@ -112,7 +112,7 @@ python3 skill_precipitator.py status              # System status
 ## Test Results
 
 ```
-$ python3 skill_precipitator.py test
+$ python3 skill_evolution.py test
 
 ✅ 15/15 tests passed
   - SHELL-heavy classification

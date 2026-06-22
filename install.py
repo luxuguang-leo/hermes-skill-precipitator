@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Install Hermes Skill Precipitator.
+Install Hermes Skill Evolution.
 
 Usage:
   python3 install.py                    # Install to ~/.hermes/scripts/
@@ -33,10 +33,10 @@ def install(prefix: str = None):
     
     # Source files
     src_files = [
-        "skill_precipitator.py",
-        "skill_precipitator_hook.py",
+        "skill_evolution.py",
+        "skill_evolution_hook.py",
     ]
-    src_dirs = ["precipitator"]
+    src_dirs = ["evolution"]
     
     for f in src_files:
         src = os.path.join(SOURCE_SCRIPTS, f)
@@ -64,9 +64,9 @@ def setup_cron():
     try:
         result = subprocess.run(
             ["hermes", "cron", "create",
-             "--name", "skill-precipitator",
+             "--name", "skill-evolution",
              "--schedule", "every 2h",
-             "--script", "skill_precipitator_hook.py",
+             "--script", "skill_evolution_hook.py",
              "--no-agent"],
             capture_output=True, text=True, timeout=10,
         )
@@ -74,8 +74,8 @@ def setup_cron():
             print("✅ Cron hook registered (every 2h)")
         else:
             print(f"⚠️  Cron setup: {result.stderr.strip()}")
-            print("   Run manually: hermes cron create --name skill-precipitator \\")
-            print("     --schedule 'every 2h' --script skill_precipitator_hook.py --no-agent")
+            print("   Run manually: hermes cron create --name skill-evolution \\")
+            print("     --schedule 'every 2h' --script skill_evolution_hook.py --no-agent")
     except FileNotFoundError:
         print("⚠️  Hermes CLI not found. Register cron manually (see README).")
 
@@ -84,7 +84,7 @@ def run_tests():
     """Run unit tests."""
     print("\nRunning tests...")
     result = subprocess.run(
-        [sys.executable, "skill_precipitator.py", "test"],
+        [sys.executable, "skill_evolution.py", "test"],
         cwd=DEST_SCRIPTS,
         capture_output=True, text=True, timeout=30,
     )
@@ -97,7 +97,7 @@ def run_tests():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Install Hermes Skill Precipitator")
+    parser = argparse.ArgumentParser(description="Install Hermes Skill Evolution")
     parser.add_argument("--prefix", help="Custom install prefix (default: ~/.hermes/scripts/)")
     parser.add_argument("--cron", action="store_true", help="Also register cron hook")
     parser.add_argument("--test", action="store_true", help="Run unit tests after install")
@@ -113,9 +113,9 @@ def main():
     
     print(f"\nUsage:")
     print(f"  cd {dest}")
-    print(f"  python3 skill_precipitator.py scan --limit 100")
-    print(f"  python3 skill_precipitator.py forge --min-cases 3")
-    print(f"  python3 skill_precipitator.py report")
+    print(f"  python3 skill_evolution.py scan --limit 100")
+    print(f"  python3 skill_evolution.py forge --min-cases 3")
+    print(f"  python3 skill_evolution.py report")
     
     return 0
 

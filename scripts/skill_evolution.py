@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Skill Precipitator v0.1 — Auto-discover reusable workflows from session history.
+"""Skill Evolution v2.0 — Auto-discover reusable workflows from session history.
 
 Usage:
   scan [--limit N] [--all]     Scan sessions → extract cases
@@ -16,10 +16,10 @@ SCRIPTS_DIR = os.path.expanduser("~/.hermes/scripts")
 if SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 
-from precipitator import VERSION
-from precipitator.miner import scan_sessions, load_cases, cluster_cases, get_summary, save_case
-from precipitator.forge import forge_skill, get_candidate_paths
-from precipitator.validator import validate_all_candidates, install_candidate
+from evolution import VERSION
+from evolution.miner import scan_sessions, load_cases, cluster_cases, get_summary, save_case
+from evolution.forge import forge_skill, get_candidate_paths
+from evolution.validator import validate_all_candidates, install_candidate
 
 
 def cmd_scan(args):
@@ -74,7 +74,7 @@ def cmd_forge(args):
 def cmd_status(args):
     cases = load_cases()
     s = get_summary(cases)
-    print(f"Skill Precipitator v{VERSION}")
+    print(f"Skill Evolution v{VERSION}")
     print(f"Cases: {s['total']} (avg {s['avg_tools']:.0f}t, max {s['max_tools']}t)")
     clusters_path = os.path.expanduser("~/.hermes/agent/clusters.json")
     clusters = json.load(open(clusters_path)) if os.path.exists(clusters_path) else {}
@@ -112,7 +112,7 @@ def cmd_install(args):
 
 
 def main():
-    p = argparse.ArgumentParser(description=f"Skill Precipitator v{VERSION}")
+    p = argparse.ArgumentParser(description=f"Skill Evolution v{VERSION}")
     sp = p.add_subparsers(dest="cmd")
     sp.add_parser("scan").add_argument("--limit", type=int, default=100)
     sp.add_parser("scan").add_argument("--all", action="store_true")
