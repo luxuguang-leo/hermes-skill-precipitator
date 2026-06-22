@@ -345,8 +345,8 @@ def detect_patterns(session_data, skill_data):
             patterns.append({
                 "type": "recurring_topic",
                 "confidence": "medium",
-                "signal": f"关键词 '{', '.join(freq_words[:5])}' 出现在多个 session 中",
-                "suggestion": "考虑将这些主题封装为 skill 或更新 SOUL.md Mission",
+                "signal": f"Keywords '{', '.join(freq_words[:5])}' appear across multiple sessions",
+                "suggestion": "Consider packaging these topics as a skill or updating SOUL.md Mission",
                 "keywords": freq_words[:5],
             })
     
@@ -356,8 +356,8 @@ def detect_patterns(session_data, skill_data):
         patterns.append({
             "type": "zombie_skills",
             "confidence": "high",
-            "signal": f"有 {skill_data['zombie_count']} 个 skill 超过60天未修改",
-            "suggestion": f"用 Curator 检查或清理: {', '.join(zombie_names[:3])}",
+            "signal": f"{skill_data['zombie_count']} skills untouched for 60+ days",
+            "suggestion": f"Check or clean with Curator: {', '.join(zombie_names[:3])}",
             "skills": zombie_names,
         })
     
@@ -374,7 +374,7 @@ def detect_patterns(session_data, skill_data):
 def run_scan(lookback_days=7):
     """Run the full Phase 1 scan and return results."""
     print(f"🔍 Hermes Reflection Phase 1 — Scan ({now().strftime('%Y-%m-%d %H:%M')})")
-    print(f"   看板: {lookback_days} 天\n")
+    print(f"   Lookback: {lookback_days} days\n")
     
     # 1. Session scan
     print("  📋 Session scan...", end=" ", flush=True)
@@ -438,39 +438,39 @@ def format_summary(report):
     # Format summary
     s = report["sessions"]
     
-    lines.append(f"📊 扫描统计")
-    lines.append(f"  近{s['recent_days']}天会话: {s['recent_total']} 个")
+    lines.append(f"📊 Scan Stats")
+    lines.append(f"  Sessions (past {s['recent_days']}d): {s['recent_total']}")
     for src, count in sorted(s["sources"].items()):
         lines.append(f"    - {src}: {count}")
     if s["top_keywords"]:
         kw = ", ".join(f"{k['word']}({k['count']})" for k in s["top_keywords"][:8])
-        lines.append(f"  全量高频关键词: {kw}")
+        lines.append(f"  Top keywords: {kw}")
     
     lines.append("")
     
     # 📦 Skills
-    lines.append("📦 Skill 审计")
-    lines.append(f"  总数: {sk['total']} | 僵尸: {sk['zombie_count']}")
+    lines.append("📦 Skill Audit")
+    lines.append(f"  Total: {sk['total']} | Zombies: {sk['zombie_count']}")
     if sk.get("zombies"):
         for z in sk["zombies"][:5]:
             cat = f" ({z['category']})" if z.get("category") else ""
-            lines.append(f"    ⚰️ {z['name']}{cat} — {z['last_modified_days']}天未修改")
+            lines.append(f"    ⚰️ {z['name']}{cat} — {z['last_modified_days']}d untouched")
         if len(sk["zombies"]) > 5:
-            lines.append(f"    ... 还有 {len(sk['zombies']) - 5} 个")
+            lines.append(f"    ... and {len(sk['zombies']) - 5} more")
     # Show category breakdown
     cat_counts = Counter(s.get("category", "") for s in sk.get("skills", []))
-    lines.append(f"  分类: {', '.join(f'{k}:{v}' for k, v in sorted(cat_counts.items()) if k)}")
+    lines.append(f"  Categories: {', '.join(f'{k}:{v}' for k, v in sorted(cat_counts.items()) if k)}")
     
     lines.append("")
     
     # 📋 Kanban
-    lines.append("📋 Kanban 看板")
+    lines.append("📋 Kanban Board")
     if kb.get("status") == "ok":
-        lines.append(f"  看板数: {kb['total_boards']}")
+        lines.append(f"  Boards: {kb['total_boards']}")
         for b in kb.get("boards", []):
             lines.append(f"    {b['name']} ({b['slug']})")
         if kb["stuck_count"] > 0:
-            lines.append(f"  ⏳ 卡住的任务: {kb['stuck_count']}")
+            lines.append(f"  ⏳ Stuck tasks: {kb['stuck_count']}")
             for t in kb["stuck"][:3]:
                 lines.append(f"    ⏳ {t['title']} ({t['stuck_hours']}h)")
     else:
@@ -479,24 +479,24 @@ def format_summary(report):
     lines.append("")
     
     # 💾 Memory
-    lines.append("💾 记忆水位")
-    lines.append(f"  MEMORY.md: {mem['memory']['size_human']} (每条目上限2.2KB)")
+    lines.append("💾 Memory Water Level")
+    lines.append(f"  MEMORY.md: {mem['memory']['size_human']} (limit 2.2KB)")
     if mem["memory"]["is_near_limit"]:
-        lines.append("    ⚠️ 接近条目上限，建议压缩")
-    lines.append(f"  USER.md: {mem['user_profile']['size_human']} (每条目上限1.4KB)")
+        lines.append("    ⚠️ Near limit, consider consolidation")
+    lines.append(f"  USER.md: {mem['user_profile']['size_human']} (limit 1.4KB)")
     if mem["user_profile"]["is_near_limit"]:
-        lines.append("    ⚠️ 接近条目上限，建议压缩")
-    lines.append(f"  SOUL.md: {mem['soul']['line_count']} 行 / {mem['soul']['size_human']}")
+        lines.append("    ⚠️ Near limit, consider consolidation")
+    lines.append(f"  SOUL.md: {mem['soul']['line_count']} lines / {mem['soul']['size_human']}")
     
     lines.append("")
     
     # 🔄 Patterns
     if pat:
-        lines.append("🔄 检测到的模式")
+        lines.append("🔄 Detected Patterns")
         for p in pat:
             icon = {"recurring_topic": "🔄", "zombie_skills": "⚰️"}.get(p["type"], "📌")
             lines.append(f"  {icon} [{p['confidence']}] {p['signal']}")
-            lines.append(f"    建议: {p['suggestion']}")
+            lines.append(f"    Suggestion: {p['suggestion']}")
     
     return "\n".join(lines)
 
